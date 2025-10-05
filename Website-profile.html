@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abu Habbah Nusantara | Partner Sourcing Komoditas Premium Indonesia</title>
+    <!-- Load Tailwind CSS untuk styling modern dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Penggunaan Inter dan Playfair Display untuk tampilan elegan -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+        
+        /* Tema Warna: Coklat Tanah (Earth Tone) dan Cream */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f3ed; /* Soft Cream Background */
+            scroll-behavior: smooth;
+        }
+        .section-bg {
+            background-color: #fffaf0; /* Light Linen untuk sections */
+        }
+        .hero-pattern {
+            /* Warna solid sebagai latar belakang hero */
+            background-color: #523A28; 
+            background-blend-mode: overlay;
+        }
+        /* Styling untuk transisi navigasi yang halus */
+        .nav-link {
+            transition: color 0.3s, background-color 0.3s;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #8B4513; /* Primary Brown */
+            background-color: #f0e9e0; /* Light hover background */
+        }
+        .card-category, .card-product {
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .card-category:hover, .card-product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+        .whatsapp-btn {
+            background-color: #25D366;
+            transition: background-color 0.3s;
+        }
+        .whatsapp-btn:hover {
+            background-color: #1DA851;
+        }
+        /* Mobile menu slide-in effect */
+        #mobile-menu {
+            transition: transform 0.3s ease-out;
+            transform: translateX(100%);
+        }
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header Navigation (Element 1) -->
+    <header class="sticky top-0 z-50 bg-white shadow-xl p-4 flex justify-between items-center">
+        <!-- Logo dan Judul -->
+        <a href="#home" class="flex items-center space-x-2 text-xl font-bold text-[#523A28] font-['Playfair_Display']">
+            <img src="https://placehold.co/40x40/523A28/FFFFFF?text=AHN" alt="AHN Logo" class="rounded-full">
+            <span>Abu Habbah Nusantara</span>
+        </a>
+        
+        <!-- Desktop Navigation Links (Routing) -->
+        <nav class="hidden md:flex space-x-2 text-lg font-medium" id="desktop-nav">
+            <!-- Links akan diisi oleh JavaScript -->
+        </nav>
+
+        <!-- Tombol Menu Mobile -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-[#523A28] focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <!-- Overlay Menu Mobile -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-50 md:hidden p-6">
+        <div class="flex justify-end mb-8">
+            <button id="close-menu-btn" class="text-gray-800 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav class="flex flex-col space-y-4" id="mobile-nav">
+             <!-- Links akan diisi oleh JavaScript -->
+        </nav>
+    </div>
+
+    <!-- Container Utama Aplikasi SPA -->
+    <main id="app" class="min-h-screen"></main>
+
+    <!-- Footer -->
+    <footer class="bg-[#523A28] text-white/70 py-4 text-center text-sm">
+        &copy; 2024 Abu Habbah Nusantara. Hak Cipta Dilindungi.
+    </footer>
+
+    <!-- JavaScript untuk Routing (Single Page Application) dan Data -->
+    <script>
+        // Data Produk Global (Element 5 dan 7)
+        const PRODUCTS_DATA = {
+            spice: {
+                key: 'spice',
+                title: "Kekayaan Rempah Indonesia: Jiwa Nusantara",
+                intro: "Indonesia, dijuluki **'Kepulauan Rempah'**, telah menjadi pusat perdagangan dunia selama ribuan tahun. Rempah-rempah kami, ditanam di tanah vulkanik yang subur, tidak hanya menawarkan rasa, tetapi juga sejarah dan kehangatan otentik Nusantara. Abu Habbah Nusantara menjamin setiap biji rempah adalah hasil panen terbaik, diverifikasi dari sumbernya.",
+                image: "https://placehold.co/600x400/8B4513/F0EFE0?text=Rempah+Indonesia+Umum",
+                products: [
+                    { name: "Vanilla Beans", type: "Planifolia", desc: "Favorit klasik dengan kandungan vanilin tinggi, aroma dalam, kaya, dan creamy.", image: "https://placehold.co/100x100/A0522D/FFFFFF?text=Vanilla" },
+                    { name: "Vanilla Beans", type: "Tahitensis", desc: "Unik dengan aroma bunga, seperti ceri, dan nada buah yang khas. ", image: "https://placehold.co/100x100/A0522D/FFFFFF?text=Vanilla" },
+                    { name: "Pepper Seeds", type: "Black Pepper", desc: "Rasa pedas yang berani dan intens. Standar kualitas untuk kedalaman dan kepanasan.", image: "https://placehold.co/100x100/523A28/FFFFFF?text=Lada" },
+                    { name: "Pepper Seeds", type: "White Pepper", desc: "Sedikit panas dan bersahaja, dipilih untuk profil rasa yang bersih dan warna terang.", image: "https://placehold.co/100x100/F0EFE0/523A28?text=Lada" },
+                    { name: "Clove", type: "Zanjibar", desc: "Kuncup grade premium dengan kandungan minyak tinggi. Sangat aromatik dan hangat.", image: "https://placehold.co/100x100/8B0000/FFFFFF?text=Cengkeh" },
+                    { name: "Cardamom", type: "White (Javanese)", desc: "Sedikit harum dengan nada jeruk lembut. Pokok dalam rempah tradisional Indonesia.", image: "https://placehold.co/100x100/D2B48C/523A28?text=Kapulaga" },
+                    { name: "Ginger", type: "Red Ginger", desc: "Dihargai karena khasiat obat dan rasa pedas yang tajam. Tinggi minyak atsiri.", image: "https://placehold.co/100x100/CC5500/FFFFFF?text=Jahe" },
+                ]
+            },
+            coffee: {
+                key: 'coffee',
+                title: "Biji Kopi Hijau Premium: Warisan Lahan Vulkanik",
+                intro: "Kopi Indonesia terkenal di seluruh dunia karena varietasnya yang kaya dan kompleks. Kami menawarkan biji kopi hijau non-sangrai (Green Beans) yang dipanen di ketinggian dan diproses dengan teliti, siap untuk di-roasting sesuai kebutuhan mitra global kami. Setiap biji membawa cerita unik dari dataran tinggi Nusantara.",
+                image: "https://placehold.co/600x400/2A1A12/F0EFE0?text=Biji+Kopi+Hijau+Umum",
+                products: [
+                    { name: "Green Coffee Beans", type: "Arabica", desc: "Dikenal karena profil aromatiknya yang kompleks, keasaman yang menyenangkan, dan keseimbangan rasa yang unggul.", image: "https://placehold.co/100x100/523A28/FFFFFF?text=Arabica" },
+                    { name: "Green Coffee Beans", type: "Robusta", desc: "Kuat, berani, dengan kandungan kafein tinggi dan tubuh yang kaya. Serbaguna untuk campuran espresso.", image: "https://placehold.co/100x100/523A28/FFFFFF?text=Robusta" },
+                ]
+            }
+        };
+
+        const NAV_LINKS = [
+            { id: 'home', text: 'Beranda', href: '#home' },
+            { id: 'assurance', text: 'Jaminan & Syarat', href: '#assurance' },
+            { id: 'leadership', text: 'Kepemimpinan', href: '#leadership' },
+            { id: 'contact', text: 'Hubungi Kami', href: '#contact' }
+        ];
+
+        // --- Router Functions ---
+        const app = document.getElementById('app');
+        const desktopNav = document.getElementById('desktop-nav');
+        const mobileNav = document.getElementById('mobile-nav');
+        
+        // Fungsi untuk membuat link navigasi
+        function setupNavigation() {
+            const createLink = (link) => `
+                <a href="${link.href}" data-route-id="${link.id}" 
+                   class="nav-link text-gray-700 hover:text-[#8B4513] font-medium" 
+                   onclick="navigate('${link.href}')">${link.text}</a>
+            `;
+
+            desktopNav.innerHTML = NAV_LINKS.map(createLink).join('');
+            mobileNav.innerHTML = NAV_LINKS.map(link => {
+                return `<a href="${link.href}" data-route-id="${link.id}" 
+                          class="nav-link text-gray-700 hover:text-[#8B4513] font-medium block p-2" 
+                          onclick="navigate('${link.href}'); closeMobileMenu();">${link.text}</a>`;
+            }).join('');
+        }
+        
+        // Fungsi untuk menandai link yang aktif
+        function updateActiveNav(activeId) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.dataset.routeId === activeId || link.getAttribute('href').includes(activeId)) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Fungsi routing utama yang mengubah konten berdasarkan hash URL
+        function navigate(hash) {
+            const path = hash.replace('#', '').split('/');
+            const route = path[0] || 'home';
+            const param = path[1];
+            
+            app.innerHTML = '';
+            let activeId = route;
+
+            switch (route) {
+                case 'home':
+                    app.innerHTML = renderHomePage();
+                    break;
+                case 'products':
+                    // Render halaman detail produk
+                    if (PRODUCTS_DATA[param]) {
+                        app.innerHTML = renderProductDetailPage(PRODUCTS_DATA[param]);
+                        activeId = 'home'; // Tetap aktifkan link Beranda
+                    } else {
+                        window.location.hash = '#home';
+                        return;
+                    }
+                    break;
+                case 'assurance':
+                    app.innerHTML = renderAssurancePage();
+                    break;
+                case 'leadership':
+                    app.innerHTML = renderLeadershipPage();
+                    break;
+                case 'contact':
+                    app.innerHTML = renderContactPage();
+                    break;
+                default:
+                    app.innerHTML = renderHomePage();
+                    window.location.hash = '#home';
+                    break;
+            }
+
+            updateActiveNav(activeId);
+            window.scrollTo(0, 0); // Gulir ke atas saat navigasi
+        }
+
+        // --- Page Rendering Functions ---
+
+        // 1. Home Page (Mencakup Elemen 2, 3, 4, 5, 10, 11 ringkasan)
+        function renderHomePage() {
+            return `
+                <!-- 1. Sambutan & Storytelling (Element 2, 3) -->
+                <section id="welcome-story" class="py-16 md:py-24 hero-pattern bg-cover bg-center text-white">
+                    <div class="max-w-6xl mx-auto px-6 text-center">
+                        <p class="text-xl mb-4 font-light italic text-gray-200">Bismillahirahmanirrahim, Assalamu'alaikum.</p>
+                        <h2 class="text-5xl md:text-7xl font-extrabold mb-6 font-['Playfair_Display'] drop-shadow-lg">
+                            Menghubungkan Hati Nusantara ke Pasar Dunia
+                        </h2>
+                        
+                        <!-- Paragraf Storytelling (Element 3) -->
+                        <p class="text-xl max-w-3xl mx-auto mb-12 leading-relaxed text-gray-100">
+                            Di jantung kekayaan Indonesia, lahirlah Abu Habbah Nusantara. Kisah kami dimulai dari keyakinan bahwa komoditas terbaik harus diperdagangkan dengan **kejujuran dan transparansi (Amanah)**. Kami bukan sekadar eksportir; kami adalah jembatan yang menghubungkan petani lokal dengan mitra global, memastikan setiap hasil bumi membawa cerita integritas dari tanah air. Kami membangun kemitraan yang didasarkan pada keberkahan dan kesuksesan bersama.
+                        </p>
+                        
+                        <!-- CTA -->
+                         <a href="#contact" onclick="navigate('#contact')" class="bg-[#8B4513] text-white font-bold py-3 px-10 rounded-full shadow-lg hover:bg-[#6F4E37] transition duration-300">
+                            Mulai Kemitraan Anda Sekarang
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- 2. Why Choose Us (Element 4 - Penjelasan Kuat) -->
+                <section class="py-16 md:py-20 section-bg">
+                    <div class="max-w-6xl mx-auto px-4">
+                        <h2 class="text-4xl font-bold text-center mb-12 text-[#523A28] font-['Playfair_Display']">
+                            Mengapa Memilih Abu Habbah Nusantara?
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                            <!-- Pilar 1: Amanah (Integritas) -->
+                            <div class="p-6 rounded-xl bg-white shadow-lg border-t-4 border-[#8B4513] card-uniform">
+                                <span class="text-5xl text-[#8B4513] mb-4 block">📜</span>
+                                <h3 class="text-2xl font-bold mb-3">Verifikasi Menyeluruh</h3>
+                                <p class="text-gray-600">Setiap komoditas melewati proses verifikasi kualitas yang ketat, dari petani hingga pelabuhan. Kami memastikan kuantitas dan kualitas sesuai 100% dengan spesifikasi kontrak.</p>
+                            </div>
+                            <!-- Pilar 2: Transparansi -->
+                            <div class="p-6 rounded-xl bg-white shadow-lg border-t-4 border-[#8B4513] card-uniform">
+                                <span class="text-5xl text-[#8B4513] mb-4 block">🔍</span>
+                                <h3 class="text-2xl font-bold mb-3">Akses Audit Lapangan</h3>
+                                <p class="text-gray-600">Kami menawarkan transparansi penuh, termasuk fasilitas pengiriman sampel untuk pengujian laboratorium Anda dan izin kunjungan langsung ke lokasi sumber kami.</p>
+                            </div>
+                            <!-- Pilar 3: Logistik Aman -->
+                            <div class="p-6 rounded-xl bg-white shadow-lg border-t-4 border-[#8B4513] card-uniform">
+                                <span class="text-5xl text-[#8B4513] mb-4 block">🚢</span>
+                                <h3 class="text-2xl font-bold mb-3">Kepastian Logistik & Dokumen</h3>
+                                <p class="text-gray-600">Kami menangani semua sertifikasi (Halal, Phyto, COO) dan menawarkan syarat pengiriman (FOB, CIF) serta pembayaran (L/C At Sight) yang terjamin keamanannya.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. General Product Category Overview (Element 5) -->
+                <section class="py-16 md:py-20 bg-gray-100">
+                    <div class="max-w-6xl mx-auto px-4">
+                        <h2 class="text-4xl font-bold text-center mb-12 text-[#523A28] font-['Playfair_Display']">
+                            Komoditas Utama Kami
+                        </h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            
+                            <!-- Kategori 1: Rempah (Spices) -->
+                            <div class="card-category bg-white rounded-xl shadow-xl overflow-hidden" onclick="navigate('#products/spice')">
+                                <img src="https://placehold.co/600x350/8B4513/F0EFE0?text=Rempah+Pilihan" alt="Spices" class="w-full h-64 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-3xl font-bold text-[#8B4513] mb-3">A. Kategori Spice</h3>
+                                    <!-- Intro Rempah -->
+                                    <p class="text-gray-700 leading-relaxed mb-4">
+                                        Rempah-rempah adalah warisan abadi Indonesia. Kami menawarkan biji vanili terbaik, cengkeh, lada, dan kapulaga yang dipilih dari perkebunan yang menjaga tradisi. Setiap rempah menjanjikan aroma dan cita rasa yang tak tertandingi, siap memperkaya produk Anda di pasar global.
+                                    </p>
+                                    <span class="inline-block text-sm font-semibold text-gray-500 hover:text-gray-800">Lihat Rincian Produk Spice &raquo;</span>
+                                </div>
+                            </div>
+
+                            <!-- Kategori 2: Biji Kopi Hijau (Green Beans Coffee) -->
+                            <div class="card-category bg-white rounded-xl shadow-xl overflow-hidden" onclick="navigate('#products/coffee')">
+                                <img src="https://placehold.co/600x350/2A1A12/F0EFE0?text=Biji+Kopi+Hijau" alt="Green Beans Coffee" class="w-full h-64 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-3xl font-bold text-[#8B4513] mb-3">B. Kategori Green Coffee Beans</h3>
+                                    <!-- Intro Kopi -->
+                                    <p class="text-gray-700 leading-relaxed mb-4">
+                                        Dari dataran tinggi yang dingin, kami membawa biji kopi hijau Arabika dan Robusta berkualitas ekspor. Biji kami dijamin non-sangrai, bersih, dan siap untuk diolah menjadi minuman kelas dunia. Kami mengutamakan varietas dengan profil rasa yang kompleks dan *body* yang kuat.
+                                    </p>
+                                    <span class="inline-block text-sm font-semibold text-gray-500 hover:text-gray-800">Lihat Rincian Produk Kopi &raquo;</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- CTA & Contact Preview (Element 10, 11 ringkasan) -->
+                <section class="py-16 md:py-20 bg-[#523A28] text-white" id="contact-preview">
+                    <div class="max-w-4xl mx-auto px-4 text-center">
+                        <h2 class="text-4xl font-bold mb-6 font-['Playfair_Display']">
+                            Jaminan Kualitas Anda Dimulai Di Sini
+                        </h2>
+                        <!-- Closing CTA (Element 10) -->
+                        <p class="text-xl max-w-2xl mx-auto mb-10 leading-relaxed text-gray-300">
+                            Kami percaya masa depan perdagangan global terletak pada kepastian, bukan spekulasi. Jadikan kami jaminan bahwa pengiriman Anda berikutnya adalah sesuai dengan yang Anda pesan, setiap saat. Inilah janji abadi Abu Habbah Nusantara.
+                        </p>
+                        
+                        <a href="https://wa.me/6282312368192" target="_blank" class="whatsapp-btn text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center w-full max-w-xs mx-auto">
+                            Hubungi Perwakilan Komersial Kami Sekarang
+                        </a>
+                        <p class="mt-4 text-sm text-gray-400">Atau lihat semua detail kontak dan syarat di halaman khusus kami.</p>
+                    </div>
+                </section>
+            `;
+        }
+
+        // 2. Product Detail Page (Element 7)
+        function renderProductDetailPage(categoryData) {
+            let productsHtml = '';
+            
+            // Kelompokkan produk berdasarkan nama utama (misalnya, "Vanilla Beans")
+            const groupedProducts = categoryData.products.reduce((acc, product) => {
+                if (!acc[product.name]) {
+                    acc[product.name] = [];
+                }
+                acc[product.name].push(product);
+                return acc;
+            }, {});
+
+            // Render kelompok produk
+            for (const name in groupedProducts) {
+                const varieties = groupedProducts[name];
+                
+                productsHtml += `
+                    <div class="mb-12 p-6 bg-white rounded-xl shadow-xl border-l-4 border-[#8B4513]">
+                        <h3 class="text-3xl font-extrabold text-[#523A28] mb-6">${name}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-${varieties.length > 1 ? 2 : 1} gap-6">
+                            ${varieties.map(product => `
+                                <div class="p-4 border border-gray-100 rounded-lg flex space-x-4 items-center">
+                                    <img src="${product.image}" alt="${product.type}" class="w-20 h-20 rounded-lg object-cover">
+                                    <div class="flex-grow">
+                                        <h4 class="text-xl font-bold text-[#8B4513]">${product.type}</h4>
+                                        <p class="text-sm text-gray-600">${product.desc}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <section class="py-16 md:py-20 section-bg">
+                    <div class="max-w-6xl mx-auto px-4">
+                        <p class="text-lg mb-2 text-gray-500"><a href="#home" onclick="navigate('#home')" class="text-[#8B4513] hover:underline">Beranda</a> / Rincian Produk</p>
+                        <h1 class="text-5xl font-extrabold mb-4 text-[#523A28] font-['Playfair_Display']">${categoryData.title}</h1>
+                        <p class="text-lg mb-12 text-gray-700 leading-relaxed">${categoryData.intro.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</p>
+
+                        ${productsHtml}
+
+                        <div class="text-center mt-16">
+                            <h3 class="text-3xl font-bold mb-4 text-[#523A28]">Verifikasi Kualitas Ekspor Anda Dimulai Di Sini</h3>
+                            <a href="#contact" onclick="navigate('#contact')" class="bg-[#8B4513] text-white font-bold py-3 px-8 rounded-full hover:bg-[#6F4E37] transition duration-300">
+                                Hubungi Kami Untuk Verifikasi Kualitas
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+        
+        // 3. Assurance Page (Element 6 - Jaminan Kualitas dan Syarat Komersial)
+        function renderAssurancePage() {
+            return `
+                <section class="py-16 md:py-20 bg-gray-100 min-h-screen">
+                    <div class="max-w-6xl mx-auto px-4">
+                        <h1 class="text-5xl font-extrabold mb-4 text-[#523A28] font-['Playfair_Display'] text-center">
+                            Jaminan Kualitas, Logistik, dan Syarat Komersial
+                        </h1>
+                        <p class="text-center text-xl text-gray-600 mb-12">Fondasi kemitraan kami adalah kepastian dan kepercayaan yang terverifikasi.</p>
+
+                        <!-- Jaminan Sertifikasi -->
+                        <div class="mb-12 p-8 rounded-xl bg-white shadow-2xl border-l-8 border-[#8B4513]">
+                            <h2 class="text-3xl font-bold mb-4 text-[#523A28]">Dokumentasi & Sertifikasi Tambahan</h2>
+                            <p class="mb-6 text-gray-700">Kami memastikan semua dokumen ekspor wajib terpenuhi dan berspesialisasi dalam menyediakan sertifikat tambahan yang krusial untuk pasar global Anda:</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <ul class="list-disc list-inside space-y-2 text-lg text-gray-800">
+                                    <li><span class="font-bold">Certificate of Origin (COO)</span>: Bukti asal Indonesia.</li>
+                                    <li><span class="font-bold">Phytosanitary Certificate</span>: Jaminan bebas hama dan penyakit.</li>
+                                </ul>
+                                <ul class="list-disc list-inside space-y-2 text-lg text-gray-800">
+                                    <li><span class="font-bold">Halal Certificate</span>: Sertifikasi kehalalan produk.</li>
+                                    <li><span class="font-bold">Specialized Docs</span>: Dokumentasi khusus lainnya sesuai permintaan Anda.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Transparansi Verifikasi Produk -->
+                        <div class="mb-12 p-8 rounded-xl bg-white shadow-2xl border-l-8 border-[#8B4513]">
+                            <h2 class="text-3xl font-bold mb-4 text-[#523A28]">Transparansi Verifikasi Produk</h2>
+                            <p class="mb-6 text-gray-700">Mitra kami berhak atas kepercayaan penuh. Kami menawarkan:</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-xl font-bold text-[#8B4513] mb-2">Pengiriman Sampel</h3>
+                                    <p class="text-gray-600">Anda dapat memesan sampel untuk pengujian laboratorium in-house Anda sendiri sebelum komitmen kontrak.</p>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-[#8B4513] mb-2">Kunjungan Audit Langsung</h3>
+                                    <p class="text-gray-600">Kiriman perwakilan Anda untuk inspeksi fisik langsung terhadap sumber dan stok kami di Indonesia.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Syarat Komersial -->
+                        <div class="p-8 rounded-xl bg-gray-900 text-white shadow-2xl">
+                            <h2 class="text-3xl font-bold mb-4">Syarat Komersial & Keamanan Pembayaran</h2>
+                            <p class="mb-6 text-gray-300">Kami menggunakan metode perdagangan internasional yang terjamin keamanannya.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-xl font-bold text-green-400 mb-2">Syarat Pengiriman (Incoterms)</h3>
+                                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-200">
+                                        <li>**FOB (Free On Board):** Kami menanggung biaya hingga barang dimuat ke kapal.</li>
+                                        <li>**CIF (Cost, Insurance, Freight):** Kami menanggung biaya hingga barang tiba di pelabuhan tujuan Anda.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-green-400 mb-2">Metode Pembayaran (Secured)</h3>
+                                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-200">
+                                        <li>**T/T (Telegraphic Transfer):** Pembayaran di awal, biasanya 30% deposit, sisanya setelah salinan B/L.</li>
+                                        <li>**L/C (Letter of Credit) At Sight:** Pembayaran teraman melalui bank, menjamin Anda hanya membayar setelah dokumen pengiriman lengkap.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        // 4. Leadership Page (Element 8 & 9 - Tim dan Testimoni)
+        function renderLeadershipPage() {
+            return `
+                <section class="py-16 md:py-20 section-bg min-h-screen">
+                    <div class="max-w-6xl mx-auto px-4 text-center">
+                        <h1 class="text-5xl font-extrabold mb-12 text-[#523A28] font-['Playfair_Display']">
+                            Pilar Organisasi Kami (Leadership)
+                        </h1>
+                        
+                        <!-- Struktur Kepemimpinan (Element 8) -->
+                        <div class="flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-12 mb-20">
+                            
+                            <!-- Pilar 1: Founder -->
+                            <div class="w-full md:w-1/2 p-8 bg-white rounded-xl shadow-2xl border-b-4 border-[#8B4513]">
+                                <div class="h-40 w-40 rounded-full mx-auto mb-4 bg-gray-200 flex items-center justify-center border-4 border-[#8B4513] overflow-hidden">
+                                    <svg class="w-20 h-20 text-gray-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900">Muhammad Faisal Akbar</h3>
+                                <p class="text-[#8B4513] font-semibold mb-3">Founder</p>
+                                <p class="text-md text-gray-600 italic mb-4">"Integritas dalam setiap biji adalah janji kami kepada dunia."</p>
+                                <p class="text-sm text-gray-700">Memimpin visi strategis, berfokus pada perluasan pasar global dan menjaga nilai-nilai perusahaan yang berdasarkan Amanah.</p>
+                            </div>
+
+                            <!-- Pilar 2: Commercial Manager -->
+                            <div class="w-full md:w-1/2 p-8 bg-white rounded-xl shadow-2xl border-b-4 border-[#8B4513]">
+                                <div class="h-40 w-40 rounded-full mx-auto mb-4 bg-gray-200 flex items-center justify-center border-4 border-[#8B4513] overflow-hidden">
+                                    <svg class="w-20 h-20 text-gray-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900">Ahmad Muhammad Muhajir</h3>
+                                <p class="text-[#8B4513] font-semibold mb-3">Commercial Manager</p>
+                                <p class="text-md text-gray-600 italic mb-4">"Kami mengelola setiap detail operasional agar komitmen kami menjadi realitas."</p>
+                                <p class="text-sm text-gray-700">Mengawasi negosiasi komersial, memastikan integritas operasional, dan menjamin kelancaran setiap sourcing.</p>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial Klien (Element 9) -->
+                        <div class="mt-20">
+                            <h2 class="text-4xl font-bold mb-10 text-[#523A28] font-['Playfair_Display']">
+                                Apa Kata Mitra Global Kami?
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                                <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-gray-400">
+                                    <p class="text-2xl italic mb-4 text-gray-800">"Kualitas biji kopi Robusta yang kami terima jauh melampaui ekspektasi. Yang paling berharga adalah transparansi dan kejujuran dalam setiap langkah proses."</p>
+                                    <p class="font-bold text-[#8B4513]">- Mr. Jensen, Importir Kopi Eropa</p>
+                                </div>
+                                <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-gray-400">
+                                    <p class="text-2xl italic mb-4 text-gray-800">"Sertifikasi Halal dan Phytosanitary diproses dengan cepat dan tanpa hambatan. Abu Habbah Nusantara adalah mitra sourcing rempah yang paling profesional yang pernah kami temui."</p>
+                                    <p class="font-bold text-[#8B4513]">- Al-Fayez Group, Timur Tengah</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        // 5. Contact Page (Element 11 - Informasi Kontak)
+        function renderContactPage() {
+            return `
+                <section class="py-16 md:py-20 bg-gray-900 text-white min-h-screen flex items-center">
+                    <div class="max-w-4xl mx-auto px-4 text-center">
+                        <h1 class="text-5xl font-extrabold mb-6 font-['Playfair_Display']">
+                            Hubungi Kami
+                        </h1>
+                        <p class="text-xl max-w-2xl mx-auto mb-10 leading-relaxed text-gray-300">
+                            Tim komersial kami siap memberikan verifikasi kualitas dan membantu Anda menyusun logistik pengiriman komoditas premium dari Indonesia.
+                        </p>
+                        
+                        <h3 class="text-3xl font-semibold mb-8 text-white">Perwakilan Komersial: Didy Noviady</h3>
+
+                        <!-- Tombol Kontak (Element 11) -->
+                        <div class="flex flex-col items-center space-y-5">
+                            <!-- Tombol WhatsApp -->
+                            <a href="https://wa.me/6282312368192" target="_blank" class="whatsapp-btn text-white font-bold py-4 px-10 rounded-full shadow-2xl hover:shadow-xl flex items-center justify-center w-full max-w-sm text-lg">
+                                <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.0001 0C5.3727 0 0 5.3727 0 12.0001C0 14.218 0.5898 16.3338 1.6811 18.2045L0.0039 24L6.0381 22.3168C7.807 23.2778 9.8732 23.7719 12.0001 23.7719C18.6273 23.7719 24 18.3991 24 11.7719C24 5.3727 18.6273 0 12.0001 0ZM12.0001 21.6841C10.0964 21.6841 8.2435 21.1611 6.6416 20.1993L6.2991 19.9881L2.8399 20.8988L3.7506 17.4395L3.5394 17.0971C2.5776 15.4952 2.0546 13.6423 2.0546 11.7719C2.0546 6.5519 6.32 2.2719 11.5397 2.2719C14.0754 2.2719 16.5057 3.2562 18.3075 5.058C20.1093 6.8598 21.0936 9.2901 21.0936 11.8258C21.0936 17.0458 16.8136 21.3108 11.5936 21.3108H12.0001ZM17.4395 15.6562C17.2181 16.1422 16.1268 16.5397 15.5807 16.6346C15.0345 16.7295 14.5937 16.7516 14.1528 16.6789C13.712 16.6062 13.1259 16.3776 12.5397 16.149C11.9536 15.9204 11.3675 15.5229 10.5901 14.8697C9.8127 14.2166 9.1724 13.4392 8.7315 12.4452C8.2907 11.4513 8.0621 10.4574 8.1348 9.9112C8.2076 9.365 8.4361 8.7789 8.6647 8.3381C8.8933 7.8973 9.3653 7.6493 9.8873 7.6493C10.1159 7.6493 10.3444 7.6493 10.4393 7.6493C10.7659 7.6493 10.9944 7.6493 11.223 8.0139C11.4516 8.3785 11.7801 9.3629 11.7801 9.5915C11.7801 9.8201 11.7801 10.0487 11.5516 10.3753C11.323 10.7018 11.1396 10.9304 10.9562 11.2035C10.7728 11.4766 10.6811 11.6601 10.5843 11.7719C10.4875 11.8837 10.3757 12.0192 10.2639 12.1558C10.1521 12.2924 9.9687 12.5199 9.8719 12.6317C9.775 12.7435 9.6833 12.8352 9.775 12.9469C9.8667 13.0587 10.2313 13.3619 10.5959 13.6885C10.9605 14.015 11.287 14.3416 11.5156 14.4534C11.7442 14.5652 11.9728 14.6569 12.2014 14.7706C12.4301 14.8843 12.6586 14.9981 12.842 15.0898C13.0254 15.1815 13.4336 15.3458 13.8207 15.1172C14.2078 14.8887 15.0031 14.5165 15.3677 14.2435C15.7323 13.9704 16.0969 14.0381 16.3255 14.2667C16.5541 14.4952 16.8926 15.1172 17.087 15.5043C17.2815 15.8914 17.51 16.0368 17.4395 15.6562Z"></path></svg>
+                                WhatsApp Didy Noviady (+62 823 1236 8192)
+                            </a>
+                            
+                            <!-- Link Email -->
+                            <a href="mailto:didynusantara@gmail.com" class="text-white font-bold py-4 px-10 rounded-full border border-white/50 hover:bg-white/10 w-full max-w-sm text-lg flex items-center justify-center">
+                                <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 4v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7"></path></svg>
+                                Email: didynusantara@gmail.com
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+        
+        // --- Event Listeners and Initialization ---
+
+        function handleHashChange() {
+            // Ambil hash dari URL dan lakukan navigasi (routing)
+            navigate(window.location.hash || '#home');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.remove('open');
+        }
+
+        window.onload = function() {
+            setupNavigation();
+
+            // Setup Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const closeMenuBtn = document.getElementById('close-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('open');
+            });
+
+            closeMenuBtn.addEventListener('click', closeMobileMenu);
+
+            // Dengarkan perubahan hash untuk tombol back/forward browser
+            window.addEventListener('hashchange', handleHashChange);
+            
+            // Pemuatan awal berdasarkan URL hash atau default ke home
+            handleHashChange();
+        };
+
+    </script>
+
+</body>
+</html>
